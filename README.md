@@ -11,10 +11,10 @@ ESP32 Arduino framework was used, along with the NimBLE Arduino library.
 
 For now it supports only up to 2 SNES controllers connected as:
 
-SNES pad (both) CLOCK Arduino pin: 19
-SNES pad (both) LATCH Arduino pin: 21
-SNES pad P1 DATA Arduino pin: 22
-SNES pad P2 DATA Arduino pin: 23
+- SNES pad (both) CLOCK Arduino pin: 19
+- SNES pad (both) LATCH Arduino pin: 21
+- SNES pad P1 DATA Arduino pin: 22
+- SNES pad P2 DATA Arduino pin: 23
 
 The idea is that we figure:
 
