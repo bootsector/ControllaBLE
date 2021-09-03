@@ -12,7 +12,7 @@ static NimBLEHIDDevice *hiddevice;
 static NimBLECharacteristic *pInputCharacteristic1;
 static NimBLECharacteristic *pInputCharacteristic2;
 
-static uint16_t snes_p1_data, snes_p2_data;
+static uint16_t snes_p1_data, snes_p2_data, old_p1_data, old_p2_data;
 
 static uint8_t digital_dir_lookup[16] = {15, 2, 6, 15, 4, 3, 5, 15, 0, 1, 7, 15, 15, 15, 15, 15};
 
@@ -91,16 +91,22 @@ void loop()
 	bitRead(snes_p2_data, SNES_Y)  ? bitSet(ble_p2_data[4], 7) : bitClear(ble_p2_data[4], 7);
 	bitRead(snes_p2_data, SNES_B)  ? bitSet(ble_p2_data[4], 6) : bitClear(ble_p2_data[4], 6);
 	bitRead(snes_p2_data, SNES_A)  ? bitSet(ble_p2_data[4], 5) : bitClear(ble_p2_data[4], 5);
-	bitRead(snes_p1_data, SNES_X)  ? bitSet(ble_p2_data[4], 4) : bitClear(ble_p2_data[4], 4);
+	bitRead(snes_p2_data, SNES_X)  ? bitSet(ble_p2_data[4], 4) : bitClear(ble_p2_data[4], 4);
 
 	bitRead(snes_p2_data, SNES_R)  ? bitSet(ble_p2_data[5], 3) : bitClear(ble_p2_data[5], 3);
 	bitRead(snes_p2_data, SNES_L)  ? bitSet(ble_p2_data[5], 2) : bitClear(ble_p2_data[5], 2);
 
 	if (pServer->getConnectedCount()) {
-		pInputCharacteristic1->setValue(ble_p1_data, sizeof(ble_p1_data));
-		pInputCharacteristic2->setValue(ble_p2_data, sizeof(ble_p2_data));
+		if(old_p1_data != snes_p1_data) {
+			pInputCharacteristic1->setValue(ble_p1_data, sizeof(ble_p1_data));
+			pInputCharacteristic1->notify();
+			old_p1_data = snes_p1_data;
+		}
 		
-		pInputCharacteristic1->notify();
-		pInputCharacteristic2->notify();
+		if(old_p2_data != snes_p2_data) {
+			pInputCharacteristic2->setValue(ble_p2_data, sizeof(ble_p2_data));
+			pInputCharacteristic2->notify();
+			old_p2_data = snes_p2_data;
+		}
 	}
 }

@@ -42,33 +42,3 @@ void snes_read(uint16_t *p1data, uint16_t *p2data) {
 	*p1data = ~p1;
 	*p2data = ~p2;
 }
-
-/*
-static uint16_t snes_in_read(int bits) {
-	uint16_t state;
-
-	GPIOA->BRR = GPIO_BRR_BR9; // Latch low
-	GPIOB->BRR = GPIO_BRR_BR9; // Clock low
-
-	GPIOA->BSRR = GPIO_BSRR_BS9; // Latch high
-	delay_us(1);
-	GPIOA->BRR = GPIO_BRR_BR9; // Latch low
-	delay_us(1);
-
-	state = bit_check(GPIOA->IDR, 10); // Data In
-
-	for(int i = 1; i < bits; i++) {
-		GPIOB->BSRR = GPIO_BSRR_BS9; // Clock high
-
-		delay_us(1);
-
-		GPIOB->BRR = GPIO_BRR_BR9; // Clock low
-
-		delay_us(1);
-
-		state = state | (bit_check(GPIOA->IDR, 10) << i); // data in
-	}
-
-	return ~state;
-}
-*/
