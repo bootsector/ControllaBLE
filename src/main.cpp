@@ -1,5 +1,5 @@
 /*
-* ControlaBLE - A retro-controllers to Bluetooth BLE adapter
+* ControllaBLE - A retro-controllers to Bluetooth BLE adapter
 *
 * Copyright (c) 2021
 * Bruno Freitas - bruno@brunofreitas.com - http://www.brunofreitas.com/
@@ -42,7 +42,7 @@ static uint8_t ble_p2_data[] = {0x7F, 0x7F, 0x7F, 0x7F, 0x0F, 0x00, 0x00};
 void setup()
 {
 
-	NimBLEDevice::init("ControlaBLE");
+	NimBLEDevice::init("ControllaBLE");
 	NimBLEDevice::setPower(ESP_PWR_LVL_P9);
 	NimBLEDevice::setSecurityAuth(BLE_SM_PAIR_AUTHREQ_BOND);
 

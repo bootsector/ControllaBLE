@@ -1,5 +1,5 @@
 /*
-* ControlaBLE - A retro-controllers to Bluetooth BLE adapter
+* ControllaBLE - A retro-controllers to Bluetooth BLE adapter
 *
 * Copyright (c) 2021
 * Bruno Freitas - bruno@brunofreitas.com - http://www.brunofreitas.com/

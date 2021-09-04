@@ -1,4 +1,4 @@
-**ControlaBLE - A retro-controllers to Bluetooth BLE adapter**
+**ControllaBLE - A retro-controllers to Bluetooth BLE adapter**
 
 This is an ESP32 based controller adapter that outputs as a dual joypad through
 Bluetooth (BLE).
