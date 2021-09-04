@@ -39,6 +39,9 @@ static uint8_t digital_dir_lookup[16] = {15, 2, 6, 15, 4, 3, 5, 15, 0, 1, 7, 15,
 static uint8_t ble_p1_data[] = {0x7F, 0x7F, 0x7F, 0x7F, 0x0F, 0x00, 0x00};
 static uint8_t ble_p2_data[] = {0x7F, 0x7F, 0x7F, 0x7F, 0x0F, 0x00, 0x00};
 
+static unsigned long led_change_millis, curr_millis;
+static uint8_t led_status = 0;
+
 class ServerCallbacks : public NimBLEServerCallbacks
 {
 	void onConnect(NimBLEServer *pServer, ble_gap_conn_desc *desc)
@@ -56,6 +59,29 @@ class ServerCallbacks : public NimBLEServerCallbacks
 		NimBLEDevice::startAdvertising();
 	};
 };
+
+void led_on() {
+	digitalWrite(2, HIGH);
+	led_status = 1;
+}
+
+void led_off() {
+	digitalWrite(2, LOW);
+	led_status = 0;
+}
+
+void led_toggle() {
+	if(led_status) {
+		led_off();
+	} else {
+		led_on();
+	}
+}
+
+void led_init() {
+	pinMode(2, OUTPUT);
+	led_off();
+}
 
 void setup()
 {
@@ -101,6 +127,7 @@ void setup()
 	pAdvertising->start();
 
 	snes_init();
+	led_init();
 }
 
 void loop()
@@ -140,6 +167,8 @@ void loop()
 	bitRead(snes_p2_data, SNES_L)  ? bitSet(ble_p2_data[5], 2) : bitClear(ble_p2_data[5], 2);
 
 	if (pServer->getConnectedCount()) {
+		led_on();
+
 		if(old_p1_data != snes_p1_data) {
 			pInputCharacteristic1->setValue(ble_p1_data, sizeof(ble_p1_data));
 			pInputCharacteristic1->notify();
@@ -150,6 +179,13 @@ void loop()
 			pInputCharacteristic2->setValue(ble_p2_data, sizeof(ble_p2_data));
 			pInputCharacteristic2->notify();
 			old_p2_data = snes_p2_data;
+		}
+	} else {
+		curr_millis = millis();
+
+		if((curr_millis - led_change_millis) > 100) {
+			led_toggle();
+			led_change_millis = curr_millis;
 		}
 	}
 }
