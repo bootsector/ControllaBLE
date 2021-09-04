@@ -39,14 +39,37 @@ static uint8_t digital_dir_lookup[16] = {15, 2, 6, 15, 4, 3, 5, 15, 0, 1, 7, 15,
 static uint8_t ble_p1_data[] = {0x7F, 0x7F, 0x7F, 0x7F, 0x0F, 0x00, 0x00};
 static uint8_t ble_p2_data[] = {0x7F, 0x7F, 0x7F, 0x7F, 0x0F, 0x00, 0x00};
 
+class ServerCallbacks : public NimBLEServerCallbacks
+{
+	void onConnect(NimBLEServer *pServer, ble_gap_conn_desc *desc)
+	{
+		Serial.print("Client address: ");
+		Serial.println(NimBLEAddress(desc->peer_ota_addr).toString().c_str());
+
+		Serial.print("Updating client params...");
+		pServer->updateConnParams(desc->conn_handle, 6, 12, 0, 600);
+	};
+
+	void onDisconnect(NimBLEServer *pServer)
+	{
+		Serial.println("Client disconnected - start advertising");
+		NimBLEDevice::startAdvertising();
+	};
+};
+
 void setup()
 {
+	Serial.begin(9600);
+
+	Serial.println("Starting HID Server");
 
 	NimBLEDevice::init("ControllaBLE");
 	NimBLEDevice::setPower(ESP_PWR_LVL_P9);
 	NimBLEDevice::setSecurityAuth(BLE_SM_PAIR_AUTHREQ_BOND);
 
 	pServer = NimBLEDevice::createServer();
+
+	pServer->setCallbacks(new ServerCallbacks());
 
 	hiddevice = new NimBLEHIDDevice(pServer);
 
