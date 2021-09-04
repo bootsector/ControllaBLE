@@ -35,8 +35,8 @@ void snes_init() {
 	pinMode(P2DAT_PIN, INPUT_PULLUP);
 }
 
-void snes_read(uint16_t *p1data, uint16_t *p2data) {
-	uint16_t p1, p2;
+void snes_read(uint16_t *p1data) {
+	uint16_t p1;
 
 	digitalWrite(LATCH_PIN, LOW);
 	digitalWrite(CLOCK_PIN, LOW);
@@ -47,7 +47,6 @@ void snes_read(uint16_t *p1data, uint16_t *p2data) {
 	delayMicroseconds(1);
 
 	p1 = digitalRead(P1DAT_PIN);
-	p2 = digitalRead(P2DAT_PIN);
 
 	for(int i = 1; i < 16; i++) {
 		digitalWrite(CLOCK_PIN, HIGH);
@@ -56,9 +55,7 @@ void snes_read(uint16_t *p1data, uint16_t *p2data) {
 		delayMicroseconds(1);
 
 		p1 |= (digitalRead(P1DAT_PIN) << i);
-		p2 |= (digitalRead(P2DAT_PIN) << i);
 	}
 
 	*p1data = ~p1;
-	*p2data = ~p2;
 }

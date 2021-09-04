@@ -37,6 +37,6 @@
 #define SNES_R      11
 
 void snes_init(void);
-void snes_read(uint16_t *p1data, uint16_t *p2data);
+void snes_read(uint16_t *p1data);
 
 #endif
