@@ -100,7 +100,7 @@ void setup()
 	hiddevice = new NimBLEHIDDevice(pServer);
 
 	// DeviceInfoService
-	hiddevice->pnp(0x02, 0x1008, 0x0100, 0x0210);
+	hiddevice->pnp(0x02, 0x0912, 0xCAFA, 0x0210);
 
 	//DeviceInfoService - Manufacturer
 	hiddevice->manufacturer()->setValue("www.brunofreitas.com");
