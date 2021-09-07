@@ -18,10 +18,4 @@ For now it supports only up to 2 SNES controllers connected as:
 
 ![alt text](https://i.imgur.com/05jYEEO.png)
 
-The idea is that we figure:
-
-- BLE latency when using with MiSTer FPGA or other platforms - current measured latency is comparable to a XBSX controller via BT with NO subjective lag perceivable. 
-
-- Why Linux is merging both virtual controllers but windows doesn't (it affects MiSTer FPGA second player, which doesn't work right now)
-
-Once the items above are figured out, and latency is acceptable, more controllers support will be added.
+Support for more controllers will be added soon!
